@@ -53,11 +53,14 @@ type LoginForm() as this =
 
         // Attach event handler
         btnLogin.Click.Add(loginAction)
+
+        
    // Get date and time to use it in booking
    let DateAandtTime () = 
         let now = System.DateTime.Now
         now.ToString("yyyy-MM-dd HH:mm:ss")
-    //add ticket to file
+
+    //add ticket to file *****important with out id
     let addticket (username: string) (date: string) (seat: decimal) (filePath: string) =
         let newLine = sprintf "%s,%s,%.2f" username date seat
         try
@@ -66,9 +69,18 @@ type LoginForm() as this =
          with
          | :? IOException as ex ->
              printfn "An error occurred while writing to the file: %s" ex.Message
-    // set file path here
-    let filePath=""
-    
+
+    //read tickets from file ticket by ticket
+    let readticket filePath =
+        try 
+            let lines=File.ReadLines(filePath)
+            for line in lines
+                printfn "%s" lines
+        with
+        |:? FileNotFoundException -> printfn "File not found"
+        | ex -> printfn "Error: %s" ex.Massage
+      
+
 
 
 
