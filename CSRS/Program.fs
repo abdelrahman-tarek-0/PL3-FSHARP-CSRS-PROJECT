@@ -74,13 +74,12 @@ let addticket (id: int) (username: string) (date: string) (seat: int) (filePath:
 
 
 let readticket filePath =
-        try 
-            let lines=File.ReadLines(filePath)
-            for line in lines
-                printfn "%s" lines
-        with
-        |:? FileNotFoundException -> printfn "File not found"
-        | ex -> printfn "Error: %s" ex.Massage
+    let lines = File.ReadLines(filePath)
+    let mutable linesList = []
+    for line in lines do
+        linesList <- line::linesList
+    linesList
+
       
 
 // Run the LoginForm
