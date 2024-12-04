@@ -57,6 +57,22 @@ type LoginForm() as this =
    let DateAandtTime () = 
         let now = System.DateTime.Now
         now.ToString("yyyy-MM-dd HH:mm:ss")
+    //add ticket to file
+    let addticket (username: string) (date: string) (seat: decimal) (filePath: string) =
+        let newLine = sprintf "%s,%s,%.2f" username date seat
+        try
+             File.AppendAllText(filePath, newLine + Environment.NewLine)
+             printfn "Successfully added: %s" newLine
+         with
+         | :? IOException as ex ->
+             printfn "An error occurred while writing to the file: %s" ex.Message
+    // set file path here
+    let filePath=""
+    
+
+
+
+
 
 // Run the LoginForm
 [<EntryPoint>]
