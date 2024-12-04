@@ -38,7 +38,7 @@ module LoginForm =
                 |> ignore
             else
                 onClickHandler txtUsername.Text
-                form.Close()
+                form.Hide()
 
         form.Controls.AddRange([| lblUsername; txtUsername; btnLogin |])
         btnLogin.Click.Add(loginAction)
