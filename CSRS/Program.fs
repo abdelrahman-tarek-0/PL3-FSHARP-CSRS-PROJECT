@@ -2,13 +2,8 @@
 open System.Drawing
 open System.Windows.Forms
 open System.IO
-
 open CSRS
 
-
-
-
-// Run the LoginForm
 [<EntryPoint>]
 let main _ =
     Application.EnableVisualStyles()
@@ -29,13 +24,8 @@ let main _ =
                         |> ignore
 
                         SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore
-                        
-
                     )
-
             seatsForm.Show()
-
-
         )
 
     Application.Run(form)
