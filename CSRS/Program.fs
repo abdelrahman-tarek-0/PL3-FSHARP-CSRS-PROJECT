@@ -53,6 +53,10 @@ type LoginForm() as this =
 
         // Attach event handler
         btnLogin.Click.Add(loginAction)
+   // Get date and time to use it in booking
+   let DateAandtTime () = 
+        let now = System.DateTime.Now
+        now.ToString("yyyy-MM-dd HH:mm:ss")
 
 // Run the LoginForm
 [<EntryPoint>]
