@@ -54,17 +54,22 @@ type LoginForm() as this =
         // Attach event handler
         btnLogin.Click.Add(loginAction)
 
-        
+
    // Get date and time to use it in booking
    let DateAandtTime () = 
         let now = System.DateTime.Now
         now.ToString("yyyy-MM-dd HH:mm:ss")
+    ///////////////////////
+    let mutable id = 0
+    let mutable date=DateAandtTime()
+    let filePath=""
 
-    //add ticket to file *****important with out id
-    let addticket (username: string) (date: string) (seat: decimal) (filePath: string) =
-        let newLine = sprintf "%s,%s,%.2f" username date seat
+    //add ticket to file with id need change seat ***********important
+    let addticket (id: int) (username: string) (date: string) (seat: int) (filePath: string) =
+        let newLine = sprintf "%d,%s,%s,%d" id username date seat
         try
              File.AppendAllText(filePath, newLine + Environment.NewLine)
+             id=id+1
              printfn "Successfully added: %s" newLine
          with
          | :? IOException as ex ->
