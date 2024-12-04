@@ -74,13 +74,17 @@ let addticket (id: int) (username: string) (date: string) (seat: int) (filePath:
 
 
 let readticket filePath =
-    let lines = File.ReadLines(filePath)
-    let mutable linesList = []
-    for line in lines do
-        linesList <- line::linesList
-    linesList
+    try
+        let lines = File.ReadLines(filePath)
+        let mutable linesList = []
+        for line in lines do
+            linesList <- line::linesList
+        linesList
+    with
+        | :? IOException as ex ->
+            printfn "An error occurred while writing to the file: %s" ex.Message
+            []
 
-      
 
 // Run the LoginForm
 [<EntryPoint>]
