@@ -19,4 +19,7 @@ module SeatsStore =
 
     let getSeats () = seats
 
+    let getSeatStatus seat =
+        seats |> List.tryFind (fun (s, _) -> s = seat) |> Option.map snd
+
 
