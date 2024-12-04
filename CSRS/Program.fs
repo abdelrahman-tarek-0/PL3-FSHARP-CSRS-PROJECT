@@ -5,11 +5,8 @@ open System.IO
 
 open Utils
 
-// Define the LoginForm class
-type LoginForm() as this =
-    inherit Form(Text = "Login Form", Width = 400, Height = 250)
-
-    // Define UI components with centered alignment and bold text
+let LoginForm onClickHandler =
+    let form = new Form(Text = "Login Form", Width = 400, Height = 250)
     let lblUsername =
         new Label(
             Text = "Username:",
@@ -34,34 +31,29 @@ type LoginForm() as this =
             Left = 150
         )
 
-    // Variable to store the logged-in username
-    let mutable loggedInUser = ""
-
-    // Define the login logic
     let loginAction _ =
         if String.IsNullOrWhiteSpace(txtUsername.Text) then
             MessageBox.Show("Please enter a username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             |> ignore
         else
-            loggedInUser <- txtUsername.Text // Save the username
+            onClickHandler txtUsername.Text
+            form.Close()
 
-            MessageBox.Show($"Welcome, {loggedInUser}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            |> ignore
-
-            this.Close() // Close the login form
-
-    do
-        // Add components to the form
-        this.Controls.AddRange([| lblUsername; txtUsername; btnLogin |])
-
-        // Attach event handler
-        btnLogin.Click.Add(loginAction)
+    form.Controls.AddRange([| lblUsername; txtUsername; btnLogin |])
+    btnLogin.Click.Add(loginAction)
+    form
 
 
 // Run the LoginForm
 [<EntryPoint>]
 let main _ =
+
     Application.EnableVisualStyles()
-    let loginForm = new LoginForm()
-    Application.Run(loginForm)
+    let form = LoginForm (fun username -> 
+
+        MessageBox.Show($"Welcome, {username}!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        |> ignore
+    )
+    Application.Run(form)
+
     0
