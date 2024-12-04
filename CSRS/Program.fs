@@ -2,6 +2,7 @@
 open System.Drawing
 open System.Windows.Forms
 
+
 // Define the LoginForm class
 type LoginForm() as this =
     inherit Form(Text = "Login Form", Width = 400, Height = 250)
@@ -55,28 +56,24 @@ type LoginForm() as this =
         btnLogin.Click.Add(loginAction)
 
 
-   // Get date and time to use it in booking
-   let DateAandtTime () = 
-        let now = System.DateTime.Now
-        now.ToString("yyyy-MM-dd HH:mm:ss")
-    ///////////////////////
-    let mutable id = 0
-    let mutable date=DateAandtTime()
-    let filePath=""
 
-    //add ticket to file with id need change seat ***********important
-    let addticket (id: int) (username: string) (date: string) (seat: int) (filePath: string) =
-        let newLine = sprintf "%d,%s,%s,%d" id username date seat
-        try
-             File.AppendAllText(filePath, newLine + Environment.NewLine)
-             id=id+1
-             printfn "Successfully added: %s" newLine
-         with
+let DateAandtTime () = 
+    let now = System.DateTime.Now
+    now.ToString("yyyy-MM-dd HH:mm:ss")
+   
+
+let addticket (id: int) (username: string) (date: string) (seat: int) (filePath: string) =
+    let newLine = sprintf "%d,%s,%s,%d" id username date seat
+    try
+        File.AppendAllText(filePath, newLine + Environment.NewLine)
+        id=id+1
+        printfn "Successfully added: %s" newLine
+    with
          | :? IOException as ex ->
-             printfn "An error occurred while writing to the file: %s" ex.Message
+            printfn "An error occurred while writing to the file: %s" ex.Message
 
-    //read tickets from file ticket by ticket
-    let readticket filePath =
+
+let readticket filePath =
         try 
             let lines=File.ReadLines(filePath)
             for line in lines
@@ -85,11 +82,6 @@ type LoginForm() as this =
         |:? FileNotFoundException -> printfn "File not found"
         | ex -> printfn "Error: %s" ex.Massage
       
-
-
-
-
-
 
 // Run the LoginForm
 [<EntryPoint>]
