@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="SeatsStore.fs" />
+    <Compile Include="SeatsForm.fs" />
     <Compile Include="LoginForm.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="Program.fs" />
