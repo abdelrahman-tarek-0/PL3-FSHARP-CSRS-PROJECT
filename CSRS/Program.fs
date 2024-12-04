@@ -3,6 +3,8 @@ open System.Drawing
 open System.Windows.Forms
 open System.IO
 
+open Utils
+
 // Define the LoginForm class
 type LoginForm() as this =
     inherit Form(Text = "Login Form", Width = 400, Height = 250)
@@ -54,36 +56,6 @@ type LoginForm() as this =
 
         // Attach event handler
         btnLogin.Click.Add(loginAction)
-
-
-
-let DateAandtTime () = 
-    let now = System.DateTime.Now
-    now.ToString("yyyy-MM-dd HH:mm:ss")
-   
-
-let addticket (id: int) (username: string) (date: string) (seat: int) (filePath: string) =
-    let newLine = sprintf "%d,%s,%s,%d" id username date seat
-    try
-        File.AppendAllText(filePath, newLine + Environment.NewLine)
-        id=id+1
-        printfn "Successfully added: %s" newLine
-    with
-         | :? IOException as ex ->
-            printfn "An error occurred while writing to the file: %s" ex.Message
-
-
-let readticket filePath =
-    try
-        let lines = File.ReadLines(filePath)
-        let mutable linesList = []
-        for line in lines do
-            linesList <- line::linesList
-        linesList
-    with
-        | :? IOException as ex ->
-            printfn "An error occurred while writing to the file: %s" ex.Message
-            []
 
 
 // Run the LoginForm
