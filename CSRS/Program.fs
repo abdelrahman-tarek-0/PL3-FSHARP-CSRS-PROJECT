@@ -1,5 +1,4 @@
-﻿open System
-open System.Drawing
+﻿open System.Drawing
 open System.Windows.Forms
 open System.IO
 open CSRS
@@ -16,7 +15,7 @@ let main _ =
             TicketFile.delete()
 
             let seatsForm =
-                SeatsForm.initForm (fun seat ->
+                SeatsForm.createForm  (fun seat ->
                         MessageBox.Show(
                             $"You have selected seat {seat}.",
                             "Seat Selected",

@@ -1,81 +1,52 @@
-namespace CSRS
+﻿namespace CSRS
 
 open System
 open System.Drawing
 open System.Windows.Forms
 
-open CSRS
-
 module SeatsForm =
-    let initForm (onSeatClick) =
-        let form = new Form(Text = "Seats", Width = 800, Height = 600)
 
-        let label =
-            new Label(
-                Text = "Book a seat",
-                Width = 200,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Arial", 12.0F, FontStyle.Bold),
-                Top = 10,
-                Left = 300
-            )
+    type SeatStatus = 
+        | Available
+        | Reserved
 
-        let mutable btns = []
+    let rows = 5
+    let cols = 5
 
-        let addBtn (btn) =
-            form.Controls.Add(btn)
-            btns <- btn :: btns
+    let mutable seatStatus = Array2D.init rows cols (fun _ _ -> Available)
 
-        let destroyBtns () =
-            for btn in btns do
-                form.Controls.Remove(btn)
+    let toggleSeatStatus (row: int) (col: int) (button: Button) =
+        if seatStatus.[row, col] = Available then
+            seatStatus.[row, col] <- Reserved
+            button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\close.png") // المسار للصورة عند الحجز
+            button.Enabled <- false
+        else
+            seatStatus.[row, col] <- Available
+            button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\open.png") // المسار للصورة عند إتاحة المقعد
+            button.Enabled <- true
 
-            btns <- []
+    let createForm (onSeatClick: int -> unit) =
+        let form = new Form(Text = "Seats", Size = Size(720, 600))
 
-  
+        let mutable seatNumber = 1 
 
-        let rec renderSeats () =
-            destroyBtns ()
-            let mutable x = 50
-            let mutable y = 50
-            let mutable i = 0
+        for row in 0..rows-1 do
+            for col in 0..cols-1 do
+                let button = new Button()
+                button.Size <- Size(130, 130)
+                button.Location <- Point(140 * col, 140 * row)
+                button.Text <- seatNumber.ToString()
+                button.TextAlign <- ContentAlignment.TopLeft
+                button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\open.png") // تأكد من المسار الصحيح للصورة
+                button.BackgroundImageLayout <- ImageLayout.Stretch
 
-            printfn "Rendering seats"
+                button.Click.Add(fun _ -> 
+                   toggleSeatStatus row col button 
+                   let seatNumberClicked = int button.Text
+                   onSeatClick seatNumberClicked  
+                )
+                form.Controls.Add(button)
 
-            for (seat, status) in SeatsStore.getSeats () do
-                printfn "Rendering seat %d" seat
-                let btnSeat =
-                    new Button(
-                        Text = string seat,
-                        Width = 50,
-                        Height = 50,
-                        Font = new Font("Arial", 12.0F, FontStyle.Bold),
-                        Top = y,
-                        Left = x
-                    )
+                seatNumber <- seatNumber + 1 
 
-
-
-                if (status = SeatsStore.SeatStatus.R) then
-                    btnSeat.Enabled <- false
-
-
-                let seatAction (e) = 
-                    onSeatClick seat
-                    renderSeats ()
-
-                form.Controls.Add(label)
-                btnSeat.Click.Add(seatAction)
-
-                addBtn btnSeat
-
-                i <- i + 1
-                x <- x + 60
-
-                if i % 10 = 0 then
-                    x <- 50
-                    y <- y + 60
-
-        renderSeats ()
         form
