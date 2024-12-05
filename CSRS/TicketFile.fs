@@ -10,12 +10,13 @@ module TicketFile =
 
 
     let tp: string =("Tickets.txt")
-    let SaveTicket(seat:int , user:string) =
+    let SaveTicket(seat:int , username:string) =
         if not (File.Exists(tp)) then
            File.WriteAllText(tp, "Tickets\n")
-        let y =TicketOperations.randomString()
-        File.AppendAllText(tp , "Ticket number "+ y+" booked for "+ user+" in seat number "+seat.ToString()+" at "+ TicketOperations.DateAandtTime()+"\n")
-        //TicketOperations.addticket(y , user , TicketOperations.DateAandtTime() , seat , tp )
+        let id =TicketOperations.randomString()
+        let date =TicketOperations.DateAandtTime()
+        //File.AppendAllText(tp , "Ticket number "+ id+" booked for "+ user+" in seat number "+seat.ToString()+" at "+ date+"\n")
+        TicketOperations.addticket id  username  date  seat  tp 
         tp
 
     let openFileInDefaultProgram (filePath: string) =
