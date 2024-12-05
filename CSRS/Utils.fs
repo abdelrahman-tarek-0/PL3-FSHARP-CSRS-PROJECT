@@ -19,14 +19,9 @@ module TicketOperations =
         new string (stringChars)
 
     let addticket (id: string) (username: string) (date: string) (seat: int) (filePath: string) =
-        let newLine = sprintf "%s\n%s\n%s\n%d" id username date seat
-
-        try
-            File.AppendAllText(filePath, newLine)
-            1
-        with :? IOException as ex ->
-            printfn "An error occurred while writing to the file: %s" ex.Message
-            0
+ 
+        File.AppendAllText(filePath , "Ticket number "+ id+" booked for "+ username+" in seat number "+seat.ToString()+" at "+ date+"\n")
+     
 
 
     let readticket filePath =

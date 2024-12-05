@@ -15,7 +15,6 @@ module TicketFile =
            File.WriteAllText(tp, "Tickets\n")
         let id =TicketOperations.randomString()
         let date =TicketOperations.DateAandtTime()
-        //File.AppendAllText(tp , "Ticket number "+ id+" booked for "+ user+" in seat number "+seat.ToString()+" at "+ date+"\n")
         TicketOperations.addticket id  username  date  seat  tp 
         tp
 
