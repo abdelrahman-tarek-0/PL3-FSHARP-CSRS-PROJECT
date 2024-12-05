@@ -7,11 +7,13 @@ open CSRS
 [<EntryPoint>]
 let main _ =
     Application.EnableVisualStyles()
-
+    
     let form =
         LoginForm.initForm (fun username ->
             MessageBox.Show($"Welcome, {username}!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information)
             |> ignore
+
+            TicketFile.delete()
 
             let seatsForm =
                 SeatsForm.initForm (fun seat ->
@@ -21,6 +23,8 @@ let main _ =
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
                         )
+                        TicketFile.openFileInDefaultProgram (TicketFile.SaveTicket (seat ,username))
+
                         |> ignore
 
                         SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore

@@ -1,36 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="SeatsStore.fs" />
+    <Compile Include="Utils.fs" />
+    <Compile Include="TicketFile.fs" />
     <Compile Include="SeatsForm.fs" />
     <Compile Include="LoginForm.fs" />
-    <Compile Include="Utils.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
     <PackageReference Include="System.Reactive.Windows.Forms" Version="6.0.1" />
   </ItemGroup>
-
 </Project>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

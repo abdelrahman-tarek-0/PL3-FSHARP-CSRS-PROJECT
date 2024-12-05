@@ -18,8 +18,8 @@ module TicketOperations =
 
         new string (stringChars)
 
-    let addticket (id: int) (username: string) (date: string) (seat: int) (filePath: string) =
-        let newLine = sprintf "%d\n%s\n%s\n%d" id username date seat
+    let addticket (id: string) (username: string) (date: string) (seat: int) (filePath: string) =
+        let newLine = sprintf "%s\n%s\n%s\n%d" id username date seat
 
         try
             File.AppendAllText(filePath, newLine)
