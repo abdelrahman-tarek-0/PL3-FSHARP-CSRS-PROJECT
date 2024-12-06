@@ -8,19 +8,9 @@ module TicketOperations =
         let now = System.DateTime.Now
         now.ToString("yyyy-MM-dd HH:mm:ss")
 
-    let randomString () =
-        let random = new Random()
-        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let stringChars = Array.zeroCreate<char> 8
-
-        for i = 0 to 7 do
-            stringChars.[i] <- chars.[random.Next(chars.Length)]
-
-        new string (stringChars)
-
     let addticket (id: string) (username: string) (date: string) (seat: int) (filePath: string) =
  
-        File.AppendAllText(filePath , "Ticket number "+ id+" booked for "+ username+" in seat number "+seat.ToString()+" at "+ date+"\n")
+        File.AppendAllText(filePath , "Ticket ID: "+ id+" booked for "+ username+" in seat number "+seat.ToString()+" at "+ date+"\n")
      
 
 
