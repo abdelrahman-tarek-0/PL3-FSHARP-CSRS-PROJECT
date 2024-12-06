@@ -21,11 +21,8 @@ let main _ =
                             "Seat Selected",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
-                        )
-                        TicketFile.openFileInDefaultProgram (TicketFile.SaveTicket (seat ,username))
-
-                        |> ignore
-
+                        ) |> ignore
+                        TicketFile.openFileInDefaultProgram (TicketFile.SaveTicket (seat ,username)) |> ignore
                         SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore
                     )
             seatsForm.Show()
