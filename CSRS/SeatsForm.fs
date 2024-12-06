@@ -18,11 +18,11 @@ module SeatsForm =
     let toggleSeatStatus (row: int) (col: int) (button: Button) =
         if seatStatus.[row, col] = Available then
             seatStatus.[row, col] <- Reserved
-            button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\close.png") // المسار للصورة عند الحجز
+            button.BackgroundImage <- Image.FromFile(@"..\..\..\..\close.png") // المسار للصورة عند الحجز
             button.Enabled <- false
         else
             seatStatus.[row, col] <- Available
-            button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\open.png") // المسار للصورة عند إتاحة المقعد
+            button.BackgroundImage <- Image.FromFile(@"..\..\..\..\open.png") // المسار للصورة عند إتاحة المقعد
             button.Enabled <- true
 
     let createForm (onSeatClick: int -> unit) =
@@ -37,7 +37,7 @@ module SeatsForm =
                 button.Location <- Point(140 * col, 140 * row)
                 button.Text <- seatNumber.ToString()
                 button.TextAlign <- ContentAlignment.TopLeft
-                button.BackgroundImage <- Image.FromFile(@"E:\Projects\Project PL3\PL3-FSHARP-CSRS-PROJECT\open.png") // تأكد من المسار الصحيح للصورة
+                button.BackgroundImage <- Image.FromFile(@"..\..\..\..\open.png") // تأكد من المسار الصحيح للصورة
                 button.BackgroundImageLayout <- ImageLayout.Stretch
 
                 button.Click.Add(fun _ -> 
