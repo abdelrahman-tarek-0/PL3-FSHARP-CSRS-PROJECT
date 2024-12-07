@@ -4,49 +4,71 @@ open System
 open System.Drawing
 open System.Windows.Forms
 
+open CSRS
+
 module SeatsForm =
+    let mutable btns = []
 
-    type SeatStatus = 
-        | Available
-        | Reserved
+    let addBtn (form: Form) (btn) =
+        printfn "Adding button"
+        form.Controls.Add(btn)
+        btns <- btn :: btns
 
-    let rows = 5
-    let cols = 5
+    let destroyBtns (form: Form) =
+        for btn in btns do
+            form.Controls.Remove(btn)
 
-    let mutable seatStatus = Array2D.init rows cols (fun _ _ -> Available)
+        btns <- []
 
-    let toggleSeatStatus (row: int) (col: int) (button: Button) =
-        if seatStatus.[row, col] = Available then
-            seatStatus.[row, col] <- Reserved
-            button.BackgroundImage <- Image.FromFile(@"..\..\..\..\close.png") // المسار للصورة عند الحجز
-            button.Enabled <- false
-        else
-            seatStatus.[row, col] <- Available
-            button.BackgroundImage <- Image.FromFile(@"..\..\..\..\open.png") // المسار للصورة عند إتاحة المقعد
-            button.Enabled <- true
 
-    let createForm (onSeatClick: int -> unit) =
+    let rec rerenderSeats (form: Form) (onSeatClick) =
+            destroyBtns (form)
+
+            let mutable x = 20
+            let mutable y = 20
+            let mutable i = 0
+
+            printfn "Rendering seats"
+
+            for (seat, status) in SeatsStore.getSeats () do
+                printfn "Rendering seat %d" seat
+
+                let btnSeat =
+                    new Button(
+                        Text = string seat,
+                        Font = new Font("Arial", 12.0F, FontStyle.Bold),
+                        Top = y,
+                        Left = x,
+                        TextAlign = ContentAlignment.TopLeft,
+                        BackgroundImageLayout = ImageLayout.Stretch,
+                        Size = Size(130, 130)
+                    )
+
+
+                if (status = SeatsStore.SeatStatus.A) then
+                    btnSeat.BackgroundImage <- Image.FromFile(@"..\..\..\..\open.png") // تأكد من المسار الصحيح للصورة
+                else
+                    btnSeat.BackgroundImage <- Image.FromFile(@"..\..\..\..\close.png") // تأكد من المسار الصحيح للصورة
+
+
+                if (status = SeatsStore.SeatStatus.R) then
+                    btnSeat.Enabled <- false
+
+
+                let seatAction (e) =
+                    onSeatClick seat
+                    rerenderSeats form onSeatClick
+
+                btnSeat.Click.Add(seatAction)
+                addBtn form btnSeat
+
+                i <- i + 1
+                x <- x + 140
+
+                if i % 4 = 0 then
+                    x <- 20
+                    y <- y + 140
+    let initForm (onSeatClick) =
         let form = new Form(Text = "Seats", Size = Size(720, 600))
-
-        let mutable seatNumber = 1 
-
-        for row in 0..rows-1 do
-            for col in 0..cols-1 do
-                let button = new Button()
-                button.Size <- Size(130, 130)
-                button.Location <- Point(140 * col, 140 * row)
-                button.Text <- seatNumber.ToString()
-                button.TextAlign <- ContentAlignment.TopLeft
-                button.BackgroundImage <- Image.FromFile(@"..\..\..\..\open.png") // تأكد من المسار الصحيح للصورة
-                button.BackgroundImageLayout <- ImageLayout.Stretch
-
-                button.Click.Add(fun _ -> 
-                   toggleSeatStatus row col button 
-                   let seatNumberClicked = int button.Text
-                   onSeatClick seatNumberClicked  
-                )
-                form.Controls.Add(button)
-
-                seatNumber <- seatNumber + 1 
-
+        rerenderSeats form onSeatClick
         form
