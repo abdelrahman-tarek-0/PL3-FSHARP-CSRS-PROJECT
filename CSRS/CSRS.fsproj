@@ -8,6 +8,7 @@
     <Compile Include="SeatsStore.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="TicketFile.fs" />
+    <Compile Include="OrderSeatForm.fs" />
     <Compile Include="SeatsForm.fs" />
     <Compile Include="LoginForm.fs" />
     <Compile Include="Program.fs" />
