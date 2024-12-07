@@ -19,4 +19,29 @@ module OrderSeat =
                 Left = 125
             )
 
+
+        let confirmBtn =
+            new Button(
+                Text = "Order",
+                Top = 100,
+                Left = 125,
+                Width = 100,
+                Height = 40,
+                Font = new Font("Arial", 12.0F, FontStyle.Bold)
+            )
+
+        confirmBtn.Click.Add(fun _ -> onClickOrder true)
+
+        let cancelBtn =
+            new Button(
+                Text = "Cancel",
+                Top = 100,
+                Left = 275,
+                Width = 100,
+                Height = 40,
+                Font = new Font("Arial", 12.0F, FontStyle.Bold)
+            )
+
+        cancelBtn.Click.Add(fun _ -> onClickOrder false)
+
         form
