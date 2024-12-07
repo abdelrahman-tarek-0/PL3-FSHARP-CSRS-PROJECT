@@ -44,4 +44,8 @@ module OrderSeat =
 
         cancelBtn.Click.Add(fun _ -> onClickOrder false)
 
+        form.Controls.Add(label)
+        form.Controls.Add(confirmBtn)
+        form.Controls.Add(cancelBtn)
+
         form
