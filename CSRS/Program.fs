@@ -11,46 +11,49 @@ let main _ =
 
     let form =
         LoginForm.initForm (fun username ->
-                MessageBox.Show($"Welcome, {username}!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                |> ignore
+            MessageBox.Show(
+                $"Welcome, {username}!", 
+                "Welcome", 
+                MessageBoxButtons.OK, 
+                MessageBoxIcon.Information
+            ) |> ignore
 
-                TicketFile.delete ()
+            TicketFile.delete ()
 
-                let rec onOrderClick (seat: int) (order: Boolean) =
-                    if order then
-                        MessageBox.Show(
-                            $"You have successfully ordered seat {seat}.",
-                            "Order Successful",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        ) |> ignore
+            let rec onOrderClick (seat: int) (order: bool) (username: string) =
+                match order with
+                | true -> 
+                    MessageBox.Show(
+                        $"You have successfully ordered seat {seat}.",
+                        "Order Successful",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    ) |> ignore
 
-                        TicketFile.openFileInDefaultProgram (TicketFile.SaveTicket(seat, username)) |> ignore
+                    TicketFile.openFileInDefaultProgram (TicketFile.SaveTicket(seat, username)) |> ignore
 
-                        printfn "Ticket saved to %s" (TicketFile.SaveTicket(seat, username))
-                        SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore
+                    printfn "Ticket saved to %s" (TicketFile.SaveTicket(seat, username))
 
-                let rec onSeatClick (form: Form) (seat) =
-                    form.Hide()
+                    SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore
 
-                    let rec orderSeatForm =
-                        OrderSeat.initForm seat (fun order ->
+            let rec onSeatClick (form: Form) (seat) =
+                form.Hide()
 
-                            onOrderClick seat order
-                            SeatsForm.rerenderSeats form (onSeatClick form)
+                let rec orderSeatForm =
+                    OrderSeat.initForm seat (fun order ->
+                        onOrderClick seat order
+                        SeatsForm.rerenderSeats form (onSeatClick form)
 
-                            form.Show()
-                            orderSeatForm.Hide()
-                                
-                            ()
-                        )
+                        form.Show()
+                        orderSeatForm.Hide()
+                    )
 
-                    orderSeatForm.Show()
+                orderSeatForm.Show()
 
-                let rec seatsForm = SeatsForm.initForm (fun seat -> onSeatClick seatsForm seat)
+            let rec seatsForm = SeatsForm.initForm (fun seat -> onSeatClick seatsForm seat)
 
-                seatsForm.Show()
-            )
+            seatsForm.Show()
+        )
 
     Application.Run(form)
 
