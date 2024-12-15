@@ -35,6 +35,8 @@ let main _ =
                     printfn "Ticket saved to %s" (TicketFile.SaveTicket(seat, username))
 
                     SeatsStore.editSeatStatus seat SeatsStore.SeatStatus.R |> ignore
+                | false -> 
+                    ()
 
             let rec onSeatClick (form: Form) (seat) =
                 form.Hide()
