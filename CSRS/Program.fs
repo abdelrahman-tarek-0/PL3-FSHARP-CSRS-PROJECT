@@ -20,7 +20,7 @@ let main _ =
 
             TicketFile.delete ()
 
-            let rec onOrderClick (seat: int) (order: bool) (username: string) =
+            let rec onOrderClick (seat: int) (order: bool) =
                 match order with
                 | true -> 
                     MessageBox.Show(
